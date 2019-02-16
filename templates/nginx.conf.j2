@@ -51,7 +51,9 @@ http {
     location / {
       default_type 'text/plain';
       content_by_lua_block {
-        ngx.say("        Client useragent:  " .. ngx.var.http_user_agent);
+        ngx.say("Thanks for connecting to {{ HOSTNAME }}");
+        ngx.say("");
+        ngx.say("       Client User Agent:  " .. ngx.var.http_user_agent);
         ngx.say("Client supported ciphers:  " .. ngx.var.ssl_ciphers);
         ngx.say("         Selected cipher:  " .. ngx.var.ssl_cipher);
       }
