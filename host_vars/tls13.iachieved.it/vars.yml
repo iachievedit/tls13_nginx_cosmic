@@ -1,0 +1,6 @@
+---
+HOSTNAME:  tls13.iachieved.it
+LE_EMAIL:  admin@iachieved.it
+
+SSL_PROTOCOLS:  'TLSv1.3'
+SSL_CIPHERS:    ''

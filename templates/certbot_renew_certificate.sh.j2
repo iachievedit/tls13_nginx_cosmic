@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DRY_RUN=$1
+
+certbot certonly ${DRY_RUN} --force-renewal --agree-tos --email {{ LE_EMAIL }} --manual --preferred-challenges=dns --manual-auth-hook /usr/local/bin/create_digitalocean_dns_record.sh --manual-cleanup-hook /usr/local/bin/delete_digitalocean_dns_record.sh -d `hostname` --manual-public-ip-logging-ok

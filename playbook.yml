@@ -1,0 +1,56 @@
+---
+- hosts: all
+  remote_user:  ubuntu
+  become:       true
+  become_user:  root
+  become_method: sudo
+
+  tasks:
+  - name:  Set hostname
+    hostname:
+      name:  "{{ HOSTNAME }}"
+
+  - name: Add LetsEncrypt Certbot PPA
+    apt_repository:
+      repo: ppa:certbot/certbot
+
+  - name: Update all packages to the latest version
+    apt:
+      upgrade: dist
+
+  - name:  Install packages
+    apt:
+      name:  "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+        - glances
+        - zsh
+        - jq
+        - certbot
+
+  - name:  Install Nginx
+    include_tasks:  tasks/nginx.yml
+
+  - name:  Install certbot dns validation hooks
+    template:
+      src:  "{{ item }}.j2"
+      dest: "/usr/local/bin/{{ item }}"
+      mode: 0500
+    with_items:
+      - create_digitalocean_dns_record.sh
+      - delete_digitalocean_dns_record.sh
+      - certbot_renew_certificate.sh
+
+  - name:  Create certificate
+    command:  /usr/local/bin/certbot_renew_certificate.sh
+    ignore_errors: true
+    notify:
+      - restart nginx
+
+  handlers:
+  - name:  restart nginx
+    service:
+     name:  nginx
+     state: restarted
