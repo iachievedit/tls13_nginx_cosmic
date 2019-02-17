@@ -1,5 +1,9 @@
 A playbook for playing with TLS 1.3!
 
+Our companion article on configuring NGINX to support TLS 1.3 https://dev.iachieved.it/iachievedit/tls-1-3-with-nginx-and-ubuntu-18-10/
+
+Test your browser!  https://tls13.iachieved.it
+
 # Requirements
 
 If you've used Let's Encrypt before with DNS challenges, and happen to have your DNS hosted by Digital Ocean, you're in luck, this playbook should work out of the box with some tweaks to a few Ansible variables.
