@@ -49,13 +49,17 @@ http {
     ssl_session_cache shared:ssl_session_cache:10m;
 
     location / {
-      default_type 'text/plain';
+      default_type 'text/html';
       content_by_lua_block {
-        ngx.say("Thanks for connecting to {{ HOSTNAME }}");
-        ngx.say("");
-        ngx.say("       Client User Agent:  " .. ngx.var.http_user_agent);
-        ngx.say("Client supported ciphers:  " .. ngx.var.ssl_ciphers);
-        ngx.say("         Selected cipher:  " .. ngx.var.ssl_cipher);
+        ngx.say("<html>");
+        ngx.say("Thanks for connecting to {{ HOSTNAME }}!");
+        ngx.say("<pre>");
+        ngx.say("Your User Agent is:  " .. ngx.var.http_user_agent);
+        ngx.say("Your client supports the following ciphers:  " .. ngx.var.ssl_ciphers);
+        ngx.say("The negotiated cipher with this server is:  " .. ngx.var.ssl_cipher);
+        ngx.say("</pre>");
+        ngx.say("If you're interested in learning how to configure your own TLS 1.3 webserver with NGINX, come check out our <a href='https://dev.iachieved.it/iachievedit/tls-1-3-with-nginx-and-ubuntu-18-10/'>blog post</a> to see how.");
+        ngx.say("</html>");
       }
     }
 
